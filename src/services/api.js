@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://turf-backend-ezdy.onrender.com/", // your backend base URL
+  baseURL: "https://turf-backend-ezdy.onrender.com/api", // your backend base URL
 });
 
 // Attach token to every request (if exists)
