@@ -2,8 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function Home() {
-  // const bgImageUrl =
-  //   "https://images.pexels.com/photos/12343288/pexels-photo-12343288.jpeg"; // Turf
+  const bgImageUrl =
+    "https://images.pexels.com/photos/12343288/pexels-photo-12343288.jpeg";
 
   const [theme, setTheme] = useState("light");
   // Set theme class to <body> on change
@@ -36,15 +36,15 @@ function Home() {
   // };
   return (
     <div
-    // style={{
-    //   backgroundImage: `url(${bgImageUrl})`,
-    //   backgroundSize: "cover",
-    //   backgroundPosition: "center",
-    //   minHeight: "100vh",
-    //   padding: 24,
-    //   color: "white", // Optional for contrast
-    //   backdropFilter: "brightness(0.7)", // Optional for readability
-    // }}
+      style={{
+        backgroundImage: `url(${bgImageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        padding: 60,
+        color: "white", // Optional for contrast
+        backdropFilter: "brightness(0.7)", // Optional for readability
+      }}
     >
       <button onClick={handleLogout}>Logout</button>
       <button

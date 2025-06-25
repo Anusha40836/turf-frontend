@@ -5,6 +5,9 @@ import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 import axios from "axios"; // 👈 Add this if not already imported
 
 function AdminTurfs() {
+  const bgImageUrl =
+    "https://cdn.pixabay.com/photo/2016/11/21/17/50/lawn-1846813_1280.jpg";
+
   const [turfs, setTurfs] = useState([]);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -124,7 +127,17 @@ function AdminTurfs() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
+    <div
+      style={{
+        backgroundImage: `url(${bgImageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        padding: 60,
+        color: "Black", // Optional for contrast
+        backdropFilter: "brightness(0.7)", // Optional for readability
+      }}
+    >
       <h2>⚙️ Admin Turf Management</h2>
 
       <div style={{ marginBottom: 20 }}>
@@ -183,7 +196,7 @@ function AdminTurfs() {
       {message && <p>{message}</p>}
 
       <h3>Existing Turfs</h3>
-      <ul>
+      <ol>
         {turfs.map((turf) => (
           <li key={turf._id}>
             <img
@@ -205,7 +218,7 @@ function AdminTurfs() {
             </button>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 }
