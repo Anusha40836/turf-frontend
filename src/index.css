@@ -1,0 +1,73 @@
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Optional: improve input/button appearance */
+input,
+button {
+  transition: all 0.3s;
+}
+
+body.dark input,
+body.dark button {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+body.light input,
+body.light button {
+  background-color: #f0f0f0;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+/* index.css or App.css */
+
+body.light {
+  background-color: #f4f4f4;
+  color: #000;
+}
+
+body.dark {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+/* Inputs and buttons */
+input,
+button,
+select,
+textarea {
+  transition: all 0.3s ease;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #666;
+}
+
+body.light input,
+body.light select,
+body.light textarea {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+body.dark a {
+  color: #90cdf4; /* Lighter blue in dark mode */
+}
+
+body.light a {
+  color: #007bff;
+}
