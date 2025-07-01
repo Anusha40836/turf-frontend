@@ -46,15 +46,21 @@ function Login() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <input name="email" placeholder="Email" onChange={handleChange} />
+        <br />
+        <br />
         <input
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleChange}
         />
+        <br />
+        <br />
+
         <button type="submit">Login</button>
       </form>
       <p>
+        <br />
         Dont't have an account <Link to="/register">Register here</Link>
       </p>
     </div>

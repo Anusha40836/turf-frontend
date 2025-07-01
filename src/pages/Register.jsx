@@ -47,15 +47,26 @@ function Register() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <input name="name" placeholder="Name" onChange={handleChange} />
+        <br />
+        <br />
+
         <input name="email" placeholder="Email" onChange={handleChange} />
+        <br />
+        <br />
+
         <input
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleChange}
         />
+        <br />
+        <br />
+
         <button type="submit">Register</button>
       </form>
+      <br />
+
       <p>
         Already have an account? <Link to="/login">Login Here</Link>
       </p>
