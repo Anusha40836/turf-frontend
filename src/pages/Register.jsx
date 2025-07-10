@@ -32,6 +32,8 @@ function Register() {
       saveToken(res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/");
+      // await API.post("/auth/register", form);
+      // navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     }
