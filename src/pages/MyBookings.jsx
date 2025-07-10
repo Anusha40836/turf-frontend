@@ -3,7 +3,7 @@ import API from "../services/api";
 
 function MyBookings() {
   const bgImageUrl =
-    "https://images.pexels.com/photos/47343/the-ball-stadion-horn-corner-47343.jpeg";
+    "https://images.pexels.com/photos/1657334/pexels-photo-1657334.jpeg";
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,20 +27,17 @@ function MyBookings() {
 
     try {
       await API.delete(`/bookings/${id}`);
-      alert("Booking deleted!");
+      alert("Booking cancelled!");
       fetchBookings();
     } catch (err) {
       console.error("Error deleting booking:", err);
-      alert("Failed to delete booking.");
+      alert("Failed to cancel booking.");
     }
   };
 
   useEffect(() => {
     fetchBookings();
   }, []);
-
-  if (loading) return <p>Loading your bookings...</p>;
-  if (bookings.length === 0) return <p>No bookings yet.</p>;
 
   return (
     <div
@@ -49,44 +46,88 @@ function MyBookings() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
-        padding: 24,
-        color: "black", // Optional for contrast
-        backdropFilter: "brightness(0.7)", // Optional for readability
+        padding: "40px 20px",
+        color: "#fff",
+        position: "relative",
       }}
     >
-      <h2>📋 My Bookings</h2>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
-        {bookings.map((booking) => (
+      {/* 🔲 Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          zIndex: 0,
+        }}
+      />
+
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <h2 style={{ textAlign: "center", marginBottom: 30 }}>
+          📋 My Bookings
+        </h2>
+
+        {loading ? (
+          <p style={{ textAlign: "center" }}>Loading your bookings...</p>
+        ) : bookings.length === 0 ? (
+          <p style={{ textAlign: "center" }}>No bookings yet.</p>
+        ) : (
           <div
-            key={booking._id}
             style={{
-              border: "1px solid #ccc",
-              padding: 16,
-              width: 300,
-              borderRadius: 8,
-              backgroundColor: "#f9f9f9",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "24px",
+              justifyContent: "center",
             }}
           >
-            <h3>{booking.turf?.name}</h3>
-            <p>📍 {booking.turf?.location}</p>
-            <p>🗓️ {booking.date}</p>
-            <p>🕒 {booking.timeSlot}</p>
-            <button
-              onClick={() => handleDelete(booking._id)}
-              style={{
-                backgroundColor: "#e63946",
-                color: "white",
-                border: "none",
-                padding: "8px 12px",
-                borderRadius: 4,
-                cursor: "pointer",
-              }}
-            >
-              Cancel Booking
-            </button>
+            {bookings.map((booking) => (
+              <div
+                key={booking._id}
+                style={{
+                  width: "300px",
+                  background: "rgba(255,255,255,0.1)",
+                  color: "#fff",
+                  borderRadius: "15px",
+                  backdropFilter: "blur(12px)",
+                  padding: "20px",
+                  boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+                  animation: "fadeIn 0.7s ease forwards",
+                }}
+              >
+                <h3>{booking.turf?.name}</h3>
+                <p>📍 {booking.turf?.location}</p>
+                <p>🗓️ {booking.date}</p>
+                <p>🕒 {booking.timeSlot}</p>
+
+                <button
+                  onClick={() => handleDelete(booking._id)}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    marginTop: "10px",
+                    borderRadius: "8px",
+                    border: "none",
+                    background: "#e63946",
+                    color: "white",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                >
+                  Cancel Booking
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
+
+      <style>
+        {`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}
+      </style>
     </div>
   );
 }

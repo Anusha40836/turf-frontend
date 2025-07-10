@@ -8,69 +8,82 @@ import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
 import AdminTurfs from "./pages/AdminTurfs";
 import AdminBookings from "./pages/AdminBookings";
+import Layout from "./components/Layout"; // ✅ Import layout
+
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/login" element={<Login />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
+      {/* Protected Routes with Layout wrapper */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Layout>
               <Home />
-            </ProtectedRoute>
-          }
-        />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-        <Route path="/register" element={<Register />} />
-
-        <Route
-          path="/turfs"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/turfs"
+        element={
+          <ProtectedRoute>
+            <Layout>
               <Turfs />
-            </ProtectedRoute>
-          }
-        />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/booking"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/booking"
+        element={
+          <ProtectedRoute>
+            <Layout>
               <Booking />
-            </ProtectedRoute>
-          }
-        />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/my-bookings"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/my-bookings"
+        element={
+          <ProtectedRoute>
+            <Layout>
               <MyBookings />
-            </ProtectedRoute>
-          }
-        />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/admin/turfs"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/admin/turfs"
+        element={
+          <ProtectedRoute>
+            <Layout>
               <AdminTurfs />
-            </ProtectedRoute>
-          }
-        />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/admin-bookings"
-          element={
-            <ProtectedRoute adminOnly={true}>
+      <Route
+        path="/admin-bookings"
+        element={
+          <ProtectedRoute adminOnly={true}>
+            <Layout>
               <AdminBookings />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </div>
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 

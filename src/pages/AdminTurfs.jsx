@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { uploadToCloudinary } from "../utils/uploadToCloudinary";
-
-import axios from "axios"; // 👈 Add this if not already imported
+import axios from "axios";
 
 function AdminTurfs() {
   const bgImageUrl =
-    "https://cdn.pixabay.com/photo/2016/11/21/17/50/lawn-1846813_1280.jpg";
+    "https://images.pexels.com/photos/1378425/pexels-photo-1378425.jpeg";
 
   const [turfs, setTurfs] = useState([]);
   const [name, setName] = useState("");
@@ -31,7 +29,6 @@ function AdminTurfs() {
     fetchTurfs();
   }, []);
 
-  // 🔄 Handle image selection
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -53,22 +50,19 @@ function AdminTurfs() {
     try {
       let imageUrl = image;
 
-      // 👇 Upload image to Cloudinary if it's a base64 string (new upload)
       if (image && image.startsWith("data:image")) {
         const formData = new FormData();
         formData.append("file", image);
-        formData.append("upload_preset", "my_unsigned_preset"); // change to your actual preset name
+        formData.append("upload_preset", "my_unsigned_preset");
 
         const cloudRes = await axios.post(
           "https://api.cloudinary.com/v1_1/dbzf9izfz/image/upload",
           formData
         );
-
         imageUrl = cloudRes.data.secure_url;
       }
 
       if (selectedTurf) {
-        // Update turf
         await API.put(`/turfs/${selectedTurf._id}`, {
           name,
           location,
@@ -77,7 +71,6 @@ function AdminTurfs() {
         });
         setMessage("Turf updated successfully!");
       } else {
-        // Add turf
         await API.post("/turfs", {
           name,
           location,
@@ -87,7 +80,7 @@ function AdminTurfs() {
         setMessage("Turf added successfully!");
       }
 
-      // Reset form
+      // Reset
       setName("");
       setLocation("");
       setPricePerHour("");
@@ -133,94 +126,180 @@ function AdminTurfs() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
-        padding: 60,
-        color: "Black", // Optional for contrast
-        backdropFilter: "brightness(0.7)", // Optional for readability
+        padding: "40px 20px",
+        color: "#fff",
+        position: "relative",
       }}
     >
-      <h2>⚙️ Admin Turf Management</h2>
+      {/* Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          zIndex: 0,
+        }}
+      />
 
-      <div style={{ marginBottom: 20 }}>
-        <h3>{selectedTurf ? "Edit Turf" : "Add New Turf"}</h3>
-        <input
-          type="text"
-          placeholder="Turf Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-        <br />
-        <input
-          type="number"
-          placeholder="Price Per Hour"
-          value={pricePerHour}
-          onChange={(e) => setPricePerHour(e.target.value)}
-        />
-        <br />
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        <br />
-        {preview && (
-          <img
-            src={preview}
-            alt="Preview"
-            style={{ width: 200, marginTop: 10 }}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: 1000,
+          margin: "auto",
+        }}
+      >
+        <h2 style={{ textAlign: "center" }}>⚙️ Admin Turf Management</h2>
+
+        {/* Form */}
+        <div
+          style={{
+            background: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(10px)",
+            borderRadius: "15px",
+            padding: "20px",
+            marginTop: "20px",
+            marginBottom: "30px",
+            boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+          }}
+        >
+          <h3>{selectedTurf ? "✏️ Edit Turf" : "➕ Add New Turf"}</h3>
+          <input
+            type="text"
+            placeholder="Turf Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={inputStyle}
           />
-        )}
-        <br />
-        <button onClick={handleAddOrUpdateTurf} disabled={loading}>
-          {loading ? "Saving..." : selectedTurf ? "Update Turf" : "Add Turf"}
-        </button>
-        {selectedTurf && (
-          <button
-            onClick={() => {
-              setSelectedTurf(null);
-              setName("");
-              setLocation("");
-              setPricePerHour("");
-              setImage("");
-              setPreview("");
-            }}
-            style={{ marginLeft: 10 }}
-          >
-            Cancel Edit
-          </button>
-        )}
-      </div>
-
-      {message && <p>{message}</p>}
-
-      <h3>Existing Turfs</h3>
-      <ol>
-        {turfs.map((turf) => (
-          <li key={turf._id}>
+          <input
+            type="text"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            style={inputStyle}
+          />
+          <input
+            type="number"
+            placeholder="Price Per Hour"
+            value={pricePerHour}
+            onChange={(e) => setPricePerHour(e.target.value)}
+            style={inputStyle}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={inputStyle}
+          />
+          {preview && (
             <img
-              src={turf.image || "https://via.placeholder.com/150"}
-              alt={turf.name}
-              style={{ width: 200, marginBottom: 8 }}
+              src={preview}
+              alt="Preview"
+              style={{ width: 200, marginTop: 10, borderRadius: 10 }}
             />
-            <br />
-            <strong>{turf.name}</strong> - {turf.location} - ₹
-            {turf.pricePerHour}/hr
-            <button onClick={() => handleEdit(turf)} style={{ marginLeft: 12 }}>
-              Edit
-            </button>
+          )}
+          <br />
+          <button
+            onClick={handleAddOrUpdateTurf}
+            disabled={loading}
+            style={buttonStyle}
+          >
+            {loading ? "Saving..." : selectedTurf ? "Update Turf" : "Add Turf"}
+          </button>
+          {selectedTurf && (
             <button
-              onClick={() => handleDelete(turf._id)}
-              style={{ marginLeft: 8 }}
+              onClick={() => {
+                setSelectedTurf(null);
+                setName("");
+                setLocation("");
+                setPricePerHour("");
+                setImage("");
+                setPreview("");
+              }}
+              style={{ ...buttonStyle, background: "#888", marginLeft: 10 }}
             >
-              Delete
+              Cancel Edit
             </button>
-          </li>
-        ))}
-      </ol>
+          )}
+        </div>
+
+        {/* Message */}
+        {message && (
+          <p
+            style={{
+              backgroundColor: "#222",
+              padding: "10px",
+              borderRadius: "6px",
+            }}
+          >
+            {message}
+          </p>
+        )}
+
+        {/* Turf List */}
+        <h3 style={{ marginBottom: 16 }}>📦 Existing Turfs</h3>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 20 }}>
+          {turfs.map((turf) => (
+            <div
+              key={turf._id}
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                padding: "16px",
+                borderRadius: "12px",
+                width: 250,
+                backdropFilter: "blur(8px)",
+                color: "#fff",
+              }}
+            >
+              <img
+                src={turf.image || "https://via.placeholder.com/150"}
+                alt={turf.name}
+                style={{ width: "100%", borderRadius: 8, marginBottom: 10 }}
+              />
+              <strong>{turf.name}</strong>
+              <p>📍 {turf.location}</p>
+              <p>💸 ₹{turf.pricePerHour}/hr</p>
+              <div style={{ marginTop: 10 }}>
+                <button onClick={() => handleEdit(turf)} style={buttonStyle}>
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(turf._id)}
+                  style={{
+                    ...buttonStyle,
+                    background: "#e63946",
+                    marginLeft: 8,
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
+
+// Reusable input + button styles
+const inputStyle = {
+  width: "100%",
+  padding: "10px",
+  margin: "8px 0",
+  borderRadius: "8px",
+  border: "none",
+  fontSize: "16px",
+};
+
+const buttonStyle = {
+  padding: "10px 16px",
+  borderRadius: "8px",
+  border: "none",
+  background: "#1abc9c",
+  color: "#fff",
+  fontWeight: "bold",
+  cursor: "pointer",
+};
 
 export default AdminTurfs;

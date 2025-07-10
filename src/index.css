@@ -71,3 +71,16 @@ body.dark a {
 body.light a {
   color: #007bff;
 }
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+}

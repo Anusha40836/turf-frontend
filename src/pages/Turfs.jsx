@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function Turfs() {
   const bgImageUrl =
-    "https://images.pexels.com/photos/18404684/pexels-photo-18404684.jpeg";
+    "https://images.pexels.com/photos/32896990/pexels-photo-32896990.jpeg";
 
   const [turfs, setTurfs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,15 +36,11 @@ function Turfs() {
     }
 
     try {
-      const token = localStorage.getItem("token"); // Optional auth
+      const token = localStorage.getItem("token");
       await API.post(
         `/turfs/${turfId}/reviews`,
         { rating, comment },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Review submitted!");
       fetchTurfs();
@@ -65,75 +61,115 @@ function Turfs() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
-        padding: 24,
-        color: "black",
-        backdropFilter: "brightness(0.7)",
+        padding: "40px 20px",
+        color: "#fff",
+        position: "relative",
       }}
     >
-      <h2>Available Turfs</h2>
-
-      {/* 🔍 Search Input */}
-      <input
-        type="text"
-        placeholder="Search by name or location..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+      {/* Overlay */}
+      <div
         style={{
-          padding: "10px",
-          marginBottom: "20px",
-          width: "100%",
-          maxWidth: 400,
-          borderRadius: 6,
-          border: "1px solid #ccc",
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          zIndex: 0,
         }}
       />
 
-      {loading ? (
-        <p>Loading turfs...</p>
-      ) : turfs.length === 0 ? (
-        <p>No turfs found.</p>
-      ) : (
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-          {turfs.map((turf) => (
-            <div
-              key={turf._id}
-              style={{
-                border: "1px solid #ccc",
-                padding: 12,
-                width: 300,
-                borderRadius: 8,
-                backgroundColor: "#ffffffcc",
-              }}
-            >
-              <img
-                src={
-                  turf.image || "https://via.placeholder.com/300x150?text=Turf"
-                }
-                alt={turf.name}
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <h2 style={{ textAlign: "center", marginBottom: 30 }}>
+          🏟️ Available Turfs
+        </h2>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 30,
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search by name or location..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              padding: "10px 16px",
+              borderRadius: "30px",
+              width: "100%",
+              maxWidth: "500px",
+              border: "none",
+              outline: "none",
+              boxShadow: "0 0 10px rgba(255,255,255,0.2)",
+            }}
+          />
+        </div>
+
+        {loading ? (
+          <p style={{ textAlign: "center" }}>Loading turfs...</p>
+        ) : turfs.length === 0 ? (
+          <p style={{ textAlign: "center" }}>No turfs found.</p>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "24px",
+              justifyContent: "center",
+            }}
+          >
+            {turfs.map((turf) => (
+              <div
+                key={turf._id}
                 style={{
-                  width: "100%",
-                  height: 150,
-                  objectFit: "cover",
-                  borderRadius: 4,
+                  width: "300px",
+                  background: "rgba(255,255,255,0.1)",
+                  color: "#fff",
+                  borderRadius: "15px",
+                  backdropFilter: "blur(12px)",
+                  padding: "20px",
+                  boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+                  animation: "fadeIn 0.7s ease forwards",
                 }}
-              />
-              <h3>{turf.name}</h3>
-              <p>📍 Location: {turf.location}</p>
-              <p>💰 Price: ₹{turf.pricePerHour}/hr</p>
-              <p>⭐ Avg Rating: {turf.averageRating?.toFixed(1) || "N/A"}</p>
-
-              <button
-                onClick={() => navigate("/booking", { state: { turf } })}
-                style={{ marginBottom: 10 }}
               >
-                Book Now
-              </button>
+                <img
+                  src={
+                    turf.image ||
+                    "https://via.placeholder.com/300x150?text=Turf"
+                  }
+                  alt={turf.name}
+                  style={{
+                    width: "100%",
+                    height: "160px",
+                    objectFit: "cover",
+                    borderRadius: "12px",
+                    marginBottom: "10px",
+                  }}
+                />
+                <h4>{turf.name}</h4>
+                <p>📍 {turf.location}</p>
+                <p>💰 ₹{turf.pricePerHour}/hr</p>
+                <p>⭐ {turf.averageRating?.toFixed(1) || "N/A"}</p>
 
-              <div>
-                <h4>Leave a Review</h4>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                <button
+                  onClick={() => navigate("/booking", { state: { turf } })}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    margin: "10px 0",
+                    borderRadius: "8px",
+                    border: "none",
+                    background: "#1E90FF",
+                    color: "white",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
                 >
+                  Book Now
+                </button>
+
+                <div>
+                  <h5 style={{ marginTop: "10px" }}>Leave a Review</h5>
                   <input
                     type="number"
                     min={1}
@@ -149,6 +185,13 @@ function Turfs() {
                         },
                       }))
                     }
+                    style={{
+                      width: "100%",
+                      padding: "6px",
+                      marginBottom: "6px",
+                      borderRadius: "5px",
+                      border: "1px solid #ccc",
+                    }}
                   />
                   <textarea
                     rows={2}
@@ -163,45 +206,73 @@ function Turfs() {
                         },
                       }))
                     }
+                    style={{
+                      width: "100%",
+                      padding: "6px",
+                      borderRadius: "5px",
+                      border: "1px solid #ccc",
+                      resize: "none",
+                    }}
                   />
-                  <button onClick={() => handleReviewSubmit(turf._id)}>
+                  <button
+                    onClick={() => handleReviewSubmit(turf._id)}
+                    style={{
+                      width: "100%",
+                      padding: "8px",
+                      marginTop: "6px",
+                      borderRadius: "5px",
+                      background: "#28a745",
+                      color: "white",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
                     Submit Review
                   </button>
                 </div>
-              </div>
 
-              {turf.reviews?.length > 0 && (
-                <div style={{ marginTop: 10 }}>
-                  <h4>Latest Reviews:</h4>
-                  {turf.reviews
-                    .slice(-3) // get last 3 reviews
-                    .reverse() // show newest first
-                    .map((r, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          borderTop: "1px solid #eee",
-                          paddingTop: 5,
-                          fontSize: 14,
-                        }}
-                      >
-                        <p>
-                          <strong>{r.name}</strong> - ⭐ {r.rating}
-                        </p>
-                        <p>{r.comment}</p>
-                      </div>
-                    ))}
-                  {turf.reviews.length > 3 && (
-                    <p style={{ fontSize: 12, marginTop: 5 }}>
-                      ...and {turf.reviews.length - 3} more
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+                {turf.reviews?.length > 0 && (
+                  <div style={{ marginTop: "10px" }}>
+                    <h5>Latest Reviews:</h5>
+                    {turf.reviews
+                      .slice(-3)
+                      .reverse()
+                      .map((r, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            borderTop: "1px solid rgba(255,255,255,0.2)",
+                            paddingTop: "6px",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>
+                            <strong>{r.name}</strong> - ⭐ {r.rating}
+                          </p>
+                          <p>{r.comment}</p>
+                        </div>
+                      ))}
+                    {turf.reviews.length > 3 && (
+                      <p style={{ fontSize: 12, opacity: 0.8 }}>
+                        ...and {turf.reviews.length - 3} more
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <style>
+        {`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}
+      </style>
     </div>
   );
 }
