@@ -32,7 +32,7 @@ function Turfs() {
   const handleReviewSubmit = async (turfId) => {
     const { rating, comment } = reviewInputs[turfId] || {};
     if (!rating || !comment) {
-      toast.warning("Please provide both rating and comment"); // ⚠️ Toast instead of alert
+      toast.warning("Please provide both rating and comment");
       return;
     }
 
@@ -43,7 +43,7 @@ function Turfs() {
         { rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      toast.success("Review submitted!"); // ✅ Toast success
+      toast.success("Review submitted!");
       fetchTurfs();
       setReviewInputs((prev) => ({
         ...prev,
@@ -51,7 +51,7 @@ function Turfs() {
       }));
     } catch (err) {
       console.error("Review submission failed:", err);
-      toast.error("Failed to submit review"); // ❌ Toast error
+      toast.error("Failed to submit review");
     }
   };
 
@@ -77,11 +77,19 @@ function Turfs() {
         }}
       />
 
-      <div style={{ position: "relative", zIndex: 1 }}>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: "1000px",
+          margin: "0 auto",
+        }}
+      >
         <h2 style={{ textAlign: "center", marginBottom: 30 }}>
           🏟️ Available Turfs
         </h2>
 
+        {/* Search Bar */}
         <div
           style={{
             display: "flex",
@@ -106,6 +114,7 @@ function Turfs() {
           />
         </div>
 
+        {/* Turf Cards */}
         {loading ? (
           <p style={{ textAlign: "center" }}>Loading turfs...</p>
         ) : turfs.length === 0 ? (
@@ -113,17 +122,15 @@ function Turfs() {
         ) : (
           <div
             style={{
-              display: "flex",
-              flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
               gap: "24px",
-              justifyContent: "center",
             }}
           >
             {turfs.map((turf) => (
               <div
                 key={turf._id}
                 style={{
-                  width: "300px",
                   background: "rgba(255,255,255,0.1)",
                   color: "#fff",
                   borderRadius: "15px",
@@ -169,6 +176,7 @@ function Turfs() {
                   Book Now
                 </button>
 
+                {/* Review Form */}
                 <div>
                   <h5 style={{ marginTop: "10px" }}>Leave a Review</h5>
                   <input
@@ -232,6 +240,7 @@ function Turfs() {
                   </button>
                 </div>
 
+                {/* Reviews */}
                 {turf.reviews?.length > 0 && (
                   <div style={{ marginTop: "10px" }}>
                     <h5>Latest Reviews:</h5>
@@ -266,6 +275,7 @@ function Turfs() {
         )}
       </div>
 
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeIn {
