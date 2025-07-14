@@ -16,6 +16,8 @@ function Footer() {
         <small>
           &copy; {new Date().getFullYear()} @Anusha - All rights reserved.
         </small>
+        <br />
+        <small>Made with ❤️ by Anusha</small>
       </div>
     </footer>
   );
