@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function AdminTurfs() {
   const bgImageUrl =
@@ -13,7 +14,6 @@ function AdminTurfs() {
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [selectedTurf, setSelectedTurf] = useState(null);
 
   const fetchTurfs = async () => {
@@ -22,6 +22,7 @@ function AdminTurfs() {
       setTurfs(res.data);
     } catch (err) {
       console.error("Error fetching turfs:", err);
+      toast.error("Failed to load turfs");
     }
   };
 
@@ -42,7 +43,7 @@ function AdminTurfs() {
 
   const handleAddOrUpdateTurf = async () => {
     if (!name || !location || !pricePerHour) {
-      return alert("Please fill all fields");
+      return toast.error("Please fill all fields");
     }
 
     setLoading(true);
@@ -69,7 +70,7 @@ function AdminTurfs() {
           pricePerHour,
           image: imageUrl,
         });
-        setMessage("Turf updated successfully!");
+        toast.success("Turf updated successfully!");
       } else {
         await API.post("/turfs", {
           name,
@@ -77,7 +78,7 @@ function AdminTurfs() {
           pricePerHour,
           image: imageUrl,
         });
-        setMessage("Turf added successfully!");
+        toast.success("Turf added successfully!");
       }
 
       // Reset
@@ -89,8 +90,8 @@ function AdminTurfs() {
       setSelectedTurf(null);
       fetchTurfs();
     } catch (err) {
-      setMessage("Error while saving turf");
       console.error(err);
+      toast.error("Error while saving turf");
     } finally {
       setLoading(false);
     }
@@ -111,11 +112,11 @@ function AdminTurfs() {
 
     try {
       await API.delete(`/turfs/${id}`);
-      setMessage("Turf deleted");
+      toast.success("Turf deleted successfully!");
       fetchTurfs();
     } catch (err) {
-      setMessage("Error deleting turf");
       console.error(err);
+      toast.error("Error deleting turf");
     }
   };
 
@@ -222,19 +223,6 @@ function AdminTurfs() {
             </button>
           )}
         </div>
-
-        {/* Message */}
-        {message && (
-          <p
-            style={{
-              backgroundColor: "#222",
-              padding: "10px",
-              borderRadius: "6px",
-            }}
-          >
-            {message}
-          </p>
-        )}
 
         {/* Turf List */}
         <h3 style={{ marginBottom: 16 }}>📦 Existing Turfs</h3>

@@ -46,6 +46,11 @@ function Navbar() {
                 My Bookings
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/">
+                Dashboard
+              </NavLink>
+            </li>
             {user?.role === "admin" && (
               <li className="nav-item">
                 <NavLink className="nav-link" to="/admin/turfs">

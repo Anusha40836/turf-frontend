@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { toast } from "react-toastify";
 
 function MyBookings() {
   const bgImageUrl =
@@ -27,11 +28,11 @@ function MyBookings() {
 
     try {
       await API.delete(`/bookings/${id}`);
-      alert("Booking cancelled!");
+      toast.success("Booking cancelled!");
       fetchBookings();
     } catch (err) {
       console.error("Error deleting booking:", err);
-      alert("Failed to cancel booking.");
+      toast.error("Failed to cancel booking.");
     }
   };
 

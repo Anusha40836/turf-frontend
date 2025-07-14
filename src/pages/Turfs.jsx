@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Turfs() {
   const bgImageUrl =
@@ -31,7 +32,7 @@ function Turfs() {
   const handleReviewSubmit = async (turfId) => {
     const { rating, comment } = reviewInputs[turfId] || {};
     if (!rating || !comment) {
-      alert("Please provide both rating and comment");
+      toast.warning("Please provide both rating and comment"); // ⚠️ Toast instead of alert
       return;
     }
 
@@ -42,7 +43,7 @@ function Turfs() {
         { rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Review submitted!");
+      toast.success("Review submitted!"); // ✅ Toast success
       fetchTurfs();
       setReviewInputs((prev) => ({
         ...prev,
@@ -50,7 +51,7 @@ function Turfs() {
       }));
     } catch (err) {
       console.error("Review submission failed:", err);
-      alert("Failed to submit review");
+      toast.error("Failed to submit review"); // ❌ Toast error
     }
   };
 

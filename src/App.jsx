@@ -9,81 +9,86 @@ import MyBookings from "./pages/MyBookings";
 import AdminTurfs from "./pages/AdminTurfs";
 import AdminBookings from "./pages/AdminBookings";
 import Layout from "./components/Layout"; // ✅ Import layout
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
+    <>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
-      {/* Protected Routes with Layout wrapper */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Home />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        {/* Protected Routes with Layout wrapper */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/turfs"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Turfs />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/turfs"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Turfs />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/booking"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Booking />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/booking"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Booking />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/my-bookings"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <MyBookings />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/my-bookings"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <MyBookings />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/admin/turfs"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <AdminTurfs />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/admin/turfs"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminTurfs />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/admin-bookings"
-        element={
-          <ProtectedRoute adminOnly={true}>
-            <Layout>
-              <AdminBookings />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+        <Route
+          path="/admin-bookings"
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <Layout>
+                <AdminBookings />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+    </>
   );
 }
 

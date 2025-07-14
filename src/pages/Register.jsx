@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/api";
 import { saveToken } from "../utils/auth";
+import { toast } from "react-toastify";
 
 function Register() {
   const bgImageUrl =
@@ -31,11 +32,14 @@ function Register() {
       });
       saveToken(res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      toast.success("Registered and Logged in successfully!");
       navigate("/");
       // await API.post("/auth/register", form);
       // navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      const msg = err.response?.data?.message || "Registration failed";
+      setError(msg);
+      toast.error(msg);
     }
   };
 

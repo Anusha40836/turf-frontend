@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify"; // ✅ Import toast
 import API from "../services/api";
 import { saveToken } from "../utils/auth";
 
 function Login() {
   const backgroundImage =
-    "https://images.pexels.com/photos/4122451/pexels-photo-4122451.jpeg"; // green turf
+    "https://images.pexels.com/photos/4122451/pexels-photo-4122451.jpeg";
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -23,13 +24,18 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
     try {
       const res = await API.post("/auth/login", form);
       saveToken(res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      toast.success("Login successful!"); // ✅ Success toast
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      const msg = err.response?.data?.message || "Login failed";
+      setError(msg);
+      toast.error(msg); // ❌ Error toast
     }
   };
 

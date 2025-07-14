@@ -1,10 +1,23 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify"; // ✅ Import toast
 
 function Home() {
   const bgImageUrl =
     "https://images.pexels.com/photos/139762/pexels-photo-139762.jpeg";
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  // ✅ Show welcome toast only once per session
+  useEffect(() => {
+    if (user && !sessionStorage.getItem("welcomeShown")) {
+      toast.success(`Welcome, ${user.name}! 👋`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      sessionStorage.setItem("welcomeShown", "true");
+    }
+  }, [user]);
 
   return (
     <div
@@ -26,7 +39,7 @@ function Home() {
 
       {/* Welcome Message */}
       <div
-        className="position-absolute top-0 start-0 p-4"
+        className="position-absolute top-0 start-0 p-4 text-white"
         style={{ zIndex: 2 }}
       >
         <h4>Welcome, {user?.name}!</h4>
